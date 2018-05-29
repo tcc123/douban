@@ -28,7 +28,7 @@ class MovieContainer extends Component {
                         style={{ lineHeight: '64px' }}
                     >
                         <Menu.Item key="1"><Link to="/">首页</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/movielist">电影列表</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/movielist/in_theaters">电影列表</Link></Menu.Item>
                         <Menu.Item key="3"><Link to="/about">关于</Link></Menu.Item>
                     </Menu>
                     </Header>

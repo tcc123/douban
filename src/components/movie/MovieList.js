@@ -25,7 +25,7 @@ class MovieList extends React.Component {
                     </Sider>
                 
                     <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-                        <Route path="/movielist/:movieType" component={ MovieCategory }></Route>
+                        <Route path="/movielist/:movieType/:page?" component={ MovieCategory }></Route>
                     </Content>
  
                 </Layout>
