@@ -1,0 +1,16 @@
+.movie_detail .content {
+    text-align: center;
+}
+
+.movie_detail .casts ul {
+    display: flex;
+    list-style: none;
+}
+
+.movie_detail .casts ul img {
+    height: 200px;
+    margin: 20px;
+}
+.movie_detail .title {
+    font-size: 20px;
+}

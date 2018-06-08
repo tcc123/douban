@@ -9,22 +9,37 @@ export default class MovieCategory extends Component {
         super(props)
         this.state = {
             data: {},
-            isLoading: true,
-            current: 1
+            isLoading: true
         }
     }
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.match)
-        const {movieType, page} = nextProps.match.params; 
-        // fetchJsonp('http://api.douban.com/v2/movie/' + movieType)
+        
+        this.fetchData(nextProps.match.params)
+    }
+
+    componentDidMount() {
+        console.log(this.props.match)   
+       
+        this.fetchData(this.props.match.params)          
+    }
+
+    // 获取数据
+    fetchData(params) {
+        const {movieType, page} = params;
+
+        //统一把需要的数据挂载到this上
+        this.page = page - 0 || 1;
+        this.movieType = movieType;
         //默认数据正在加载中
         this.setState({
-            isLoading: true,
-            current: (page - 0) || 1
-        })
+            isLoading: true
+        }) 
+
+        // fetchJsonp('http://api.douban.com/v2/movie/' + movieType)
         //start 表示当前页开始的索引号
         //count 表示当前页的条数
-        fetch(`/api/movie/${ movieType }?start=${(page - 1) * 5}&count=5`)
+        fetch(`/api/movie/${ this.movieType }?start=${(this.page - 1) * 5}&count=5`)
         .then(res => res.json())
         .then(data => {
             // console.log(data)
@@ -34,13 +49,16 @@ export default class MovieCategory extends Component {
             })
         })
     }
-
     handlePage(page, pageSize) {
-        this.props.history.push(`/movielist/${this.props.match.params.movieType}/${page}`)
+        this.props.history.push(`/movielist/${this.movieType}/${page}`)
+    }
+
+    goDetail(id) {
+        this.props.history.push(`/movielist/detail/${id}`)
     }
     render() {
-        const { current, isLoading, data } = this.state;
-        console.log(current)
+        const { isLoading, data } = this.state;
+    
         if(isLoading) {
             return (
                 <Spin tip="Loading...">
@@ -64,6 +82,7 @@ export default class MovieCategory extends Component {
                             <img alt="example" src={item.images.small}
                             style={{ width: 100, margin: '0 auto' }}/>
                         }
+                        onClick={() => this.goDetail(item.id)}
                     >
                         <h3>{item.title}</h3>
                         <p>电影类型：{item.genres.join('、')}</p>
@@ -76,7 +95,7 @@ export default class MovieCategory extends Component {
         return (
             <div>
                 <div className="movie-list">{movieList}</div>
-                <Pagination defaultCurrent={1} current={ current } defaultPageSize={5} total={total} onChange={this.handlePage.bind(this)}/>
+                <Pagination defaultCurrent={1} current={ this.page } defaultPageSize={5} total={total} onChange={this.handlePage.bind(this)}/>
             </div>
         )
     }
